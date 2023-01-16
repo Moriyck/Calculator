@@ -1,2 +1,16 @@
-package PACKAGE_NAME;public enum Operator {
+public enum Operator {
+    P("+"),
+    M("-"),
+    D("/"),
+    U("*");
+
+    String displayOperator;
+
+    Operator(String displayOperator) {
+        this.displayOperator = displayOperator;
+    }
+
+    String getOperator() {
+        return displayOperator;
+    }
 }

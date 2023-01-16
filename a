@@ -1,0 +1,144 @@
+String inputString;
+int result;
+char firstCharacter;
+char secondCharacter;
+char thirdCharacter;
+char fourthCharacter;
+char fifthCharacter;
+
+int firstNumber;
+char operator;
+int secondNumber;
+
+int theNumberTen;
+
+try (Scanner keyboardScanner = new Scanner(System.in)) {
+    System.out.println("Input: ");
+    inputString = keyboardScanner.nextLine();
+    char[] inputStringArry = new char[inputString.length()];
+
+    for (int i = 0; i < inputStringArry.length; i++) {
+        inputStringArry[i] = inputString.toCharArray()[i];
+    }
+
+    for (int i = 0; i < inputStringArry.length; i++) {
+
+        if (Character.isDigit(inputStringArry[i]) == false) {
+            operator = inputStringArry[i];
+
+            firstNumber = Character.digit(inputString.charAt(1), 10);
+            secondNumber = Character.digit(inputString.charAt(3), 10);
+
+            switch (operator) {
+                case '+':
+                    result = firstNumber + secondNumber;
+                    System.out.println("Output: " + result + " op:" + operator + " ....:" + firstNumber);
+                    break;
+
+                case '-':
+                    result = firstNumber - secondNumber;
+                    System.out.println("Output: " + result);
+                    break;
+
+                case '*':
+                    result = firstNumber * secondNumber;
+                    System.out.println("Output: " + result);
+                    break;
+
+                case '/':
+                    result = firstNumber / secondNumber;
+                    System.out.println("Output: " + result);
+                    break;
+                default:
+                    System.out.println("ОШИБКА т.к. строка не является математической операцией");
+                    break;
+            }
+        }
+    }
+
+    if (inputString.length() < 3) {
+        System.out.println("ОШИБКА т.к. строка не является математической операцией");
+    }
+
+    if (inputString.length() > 5) {
+        System.out.println("ОШИБКА т.к. строка не является математической операцией");
+    }
+
+} catch (Exception e) {
+    System.out.println("ОШИБКА ");
+}
+} 
+ 
+ 
+ switch (operator) {
+                case '+':
+                    result = firstNumber + secondNumber;
+                    System.out.print("Результат " + result);
+                    break;
+
+                case '-':
+                    result = firstNumber - secondNumber;
+                    System.out.print("Результат " + result);
+                    break;
+
+                case '*':
+                    result = firstNumber * secondNumber;
+                    System.out.print("Результат " + result);
+                    break;
+
+                case '/':
+                    result = firstNumber - secondNumber;
+                    System.out.print("Результат " + result);
+                    break;
+                default:
+                    System.out.print("ОШИБКА т.к. строка не является математической операцией");
+                    break;
+            }
+
+
+            switch (operator) {
+                case '+':
+                    result = firstNumber + secondNumber;
+                    System.out.println("Output: ");
+                    System.out.println(result);
+                    break;
+    
+                case '-':
+                    result = firstNumber - secondNumber;
+                    System.out.println("Output: " + result);
+                    break;
+    
+                case '*':
+                    result = firstNumber * secondNumber;
+                    System.out.println("Output: " + result);
+                    break;
+    
+                case '/':
+                    result = firstNumber / secondNumber;
+                    System.out.println("Output: " + result);
+                    break;
+                default:
+                    System.out.println("Output: ");
+                    System.out.println("ОШИБКА т.к. строка не является математической операцией");
+            }
+    
+              // final String SOURCE_ROOT = "c:\\projects\\my\\";
+            //
+            // inputMethod = inputMethodArab;
+
+            Input_method inputMethodArab = Input_method.PATERN_ARAB;
+            Input_method inputMethodRom = Input_method.PATERN_ROM;
+            String patternArab = inputMethodArab.getInput();
+            String patternRom = inputMethodRom.getInput();
+
+            if (Character.isDigit(firstCharacter) == false) {
+                Pattern r = Pattern.compile(patternRom);
+                Matcher m = r.matcher(inputString);
+                System.out.println("ROM");
+                System.out.println(m.matches());
+            } else {
+                Pattern r = Pattern.compile(patternArab);
+                Matcher m = r.matcher(inputString);
+                System.out.println("ARAB");
+                System.out.println(m.matches());
+            }

@@ -1,58 +1,87 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     /**
      * @param args
      */
+
     public static void main(String[] args) {
-        String inputString;
+
+        char firstCharacter;
+        char secondCharacter;
+        char thirdCharacter;
+        char fourthCharacter;
+        char fifthCharacter;
         int firstNumber;
+        char operator;
+        int operatorIndex;
+
         int secondNumber;
-        char calculationSign;
         int result;
-        // -------------------------Ошибки---------------------------------
+        Boolean operatorSelection;
+        Input_method inputMethod;
+        int theNumberTen;
 
-        /*
-         * "т.к. в римской системе нет отрицательных чисел ",
-         * "т.к. используются одновременно разные системы счисления",
-         * "т.к. строка не является математической операцией",
-         * "т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)"
-         */
+        Input_errors inputErrors;
+        String inputErrorsString;
 
-        try (Scanner keyboardScanner = new Scanner(System.in)) {
-            System.out.println("Введите знинчения для вычисления ");
-            inputString = keyboardScanner.nextLine();
+        String[] operatorsStrings = { "+", "-", "/", "*" };
+        operatorIndex = -1;
 
-            firstNumber = Character.digit(inputString.charAt(0), 10);
-            calculationSign = inputString.charAt(1);
-            secondNumber = Character.digit(inputString.charAt(2), 10);
+        Scanner keyboardScanner = new Scanner(System.in);
+        System.out.println("Input: ");
+        String inputString = keyboardScanner.nextLine();
 
-            switch (calculationSign) {
-                case '+':
-                    result = firstNumber + secondNumber;
-                    System.out.println("Результат " + result);
-                    break;
+        int[] inputStringArry = new int[inputString.length()];
 
-                case '-':
-                    result = firstNumber - secondNumber;
-                    System.out.println("Результат " + result);
-                    break;
-
-                case '*':
-                    result = firstNumber * secondNumber;
-                    System.out.println("Результат " + result);
-                    break;
-
-                case '/':
-                    result = firstNumber - secondNumber;
-                    System.out.println("Результат " + result);
-                    break;
-                default:
-                    System.out.println(" т.к. в римской системе нет отрицательных чисел ");
-                    break;
-            }
-        } catch (Exception e) {
-            System.out.println("ОШИБКА ");
+        for (int i = 0; i < inputStringArry.length; i++) {
+            inputStringArry[i] = inputString.toCharArray()[i];
         }
+
+        for (int i = 0; i < operatorsStrings.length; i++) {
+            if (inputString.contains(operatorsStrings[i])) {
+                operatorIndex = i;
+                break;
+            }
+        }
+
+        if (operatorIndex == -1) {
+            inputErrors = Input_errors.STRING_NOT_MATH_OPERATION;
+            inputErrorsString = inputErrors.getError();
+            return;
+        }
+
+        System.out.println(operatorIndex);
+
+        firstCharacter = inputString.charAt(0);
+
+        firstNumber = Character.digit(inputString.charAt(0), 10);
+        operator = inputString.charAt(1);
+        secondNumber = Character.digit(inputString.charAt(2), 10);
+
+        Input_method inputMethodArab = Input_method.PATERN_ARAB;
+        Input_method inputMethodRom = Input_method.PATERN_ROM;
+        String patternArab = inputMethodArab.getInput();
+        String patternRom = inputMethodRom.getInput();
+        Pattern r;
+        Matcher m;
+
+        if (Character.isDigit(firstCharacter) == false) {
+            r = Pattern.compile(patternRom);
+            m = r.matcher(inputString);
+            operatorSelection = m.matches();
+            return;
+        } else {
+            r = Pattern.compile(patternArab);
+            m = r.matcher(inputString);
+            operatorSelection = m.matches();
+
+        }
+
+        System.out.println("ARAB " + operatorsStrings[0]);
+
     }
+
 }

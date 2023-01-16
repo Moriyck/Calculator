@@ -1,2 +1,2 @@
-package PACKAGE_NAME;public enum Input {
+public enum Input {
 }

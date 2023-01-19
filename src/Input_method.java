@@ -13,5 +13,4 @@ public enum Input_method {
     String getInput() {
         return displayInput;
     }
-
 }

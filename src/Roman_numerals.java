@@ -8,22 +8,13 @@ public enum Roman_numerals {
     VII("7"),
     VIII("8"),
     IX("9"),
-    X("10");
+    X("10"),
+    XI("11");
 
     String displayRomNum;
-    String arabNumString = "I";
 
     Roman_numerals(String displayRomNum) {
         this.displayRomNum = displayRomNum;
-    }
-
-    String setRomNum(String arabNumString) {
-
-        switch (arabNumString) {
-            case "I":
-                displayRomNum = "1";
-        }
-        return displayRomNum;
     }
 
     String getRomNum() {

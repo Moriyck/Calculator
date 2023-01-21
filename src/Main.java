@@ -1,68 +1,64 @@
+import javax.imageio.IIOException;
+
 public class Main {
     public static void main(String[] args) {
-
         System.out.println("Input: ");
-        EnteredString enteredString = new EnteredString();
+        OutputData outputData = new OutputData();
+        outputData.executionResult(calc(""));
+    }
 
-        enteredString.operatorIndex = -1;
-        for (int i = 0; i < enteredString.operatorsStrings.length; i++) {
-            if (enteredString.inputString.contains(enteredString.operatorsStrings[i])) {
-                enteredString.operatorIndex = i;
-                break;
+    public static String calc(String input) {
+        EnteredString enteredString = new EnteredString();
+        LogicalLayer logicalLayer = new LogicalLayer();
+        Converter converter = new Converter();
+        enteredString.checkFormat();
+        if (!enteredString.arabBooleanNoFormat) {
+            try {
+                throw new IIOException(input);
+            } catch (Exception e) {
+                enteredString.inputErrors = Input_errors.FORMAT_NOT_SATISFY_TASK;
+                input = enteredString.inputErrors.getError();
+            }
+        } else {
+            try {
+                enteredString.operatorSearch();
+                enteredString.splitIntoTwo();
+                try {
+                    try {
+                        logicalLayer.firstNumber = Integer.parseInt(enteredString.data[0]);
+                        logicalLayer.secondNumber = Integer.parseInt(enteredString.data[1]);
+                        logicalLayer.operator = enteredString.operatorsStrings[enteredString.operatorIndex];
+                    } catch (Exception e) {
+                        converter.a1 = enteredString.data[0];
+                        converter.a2 = enteredString.data[1];
+                        converter.convert();
+                        logicalLayer.firstNumber = Integer.parseInt(converter.arabNum1);
+                        logicalLayer.secondNumber = Integer.parseInt(converter.arabNum2);
+                        logicalLayer.operator = enteredString.operatorsStrings[enteredString.operatorIndex];
+                        converter.rom = true;
+                    }
+                    try {
+                        logicalLayer.calculationResult();
+                        try {
+                            converter.result = logicalLayer.result;
+                            converter.convertOutputRom();
+                            input = converter.resultString;
+                        } catch (Exception e) {
+                            System.out.println("convertOutputRom ERROR");
+                        }
+                    } catch (Exception e) {
+                        enteredString.inputErrors = Input_errors.INPUT_NUMBERS_FROM_1_TO_10_INCLUSIVE;
+                        input = enteredString.inputErrors.getError();
+                    }
+                } catch (Exception e) {
+                    enteredString.inputErrors = Input_errors.DIFFERENT_NUMBER_SYSTEMS;
+                    input = enteredString.inputErrors.getError();
+                }
+            } catch (Exception e) {
+                enteredString.inputErrors = Input_errors.STRING_NOT_MATH_OPERATION;
+                input = enteredString.inputErrors.getError();
             }
         }
-        if (enteredString.operatorIndex == -1) {
-            enteredString.inputErrors = Input_errors.STRING_NOT_MATH_OPERATION;
-            enteredString.initialLine();
-            return;
-        }
-
-        LogicalLayer logicalLayer = new LogicalLayer();
-        logicalLayer.data = enteredString.inputString.split(enteredString.regexActions[enteredString.operatorIndex]);
-
-        logicalLayer.dataFirstNumber = logicalLayer.data[0];
-        logicalLayer.dataSecondNumber = logicalLayer.data[1];
-
-        logicalLayer.checkFormat();
-
-        if (logicalLayer.chtckFormat == 5) {
-            enteredString.inputErrors = Input_errors.DIFFERENT_NUMBER_SYSTEMS;
-            enteredString.initialLine();
-            return;
-        }
-
-        if (logicalLayer.arabBooleanNoFormat == true) {
-            enteredString.inputErrors = Input_errors.FORMAT_NOT_SATISFY_TASK;
-            enteredString.initialLine();
-            return;
-        }
-
-        if (logicalLayer.romArab == 1) {
-            logicalLayer.firstNumber = Integer.parseInt(logicalLayer.data[0]);
-            logicalLayer.secondNumber = Integer.parseInt(logicalLayer.data[1]);
-            logicalLayer.operator = enteredString.operatorsStrings[enteredString.operatorIndex];
-        }
-
-        Converter converter = new Converter();
-
-        converter.a1 = logicalLayer.data[0];
-        converter.a2 = logicalLayer.data[1];
-
-        if (logicalLayer.romArab == 2) {
-            converter.convert();
-            logicalLayer.firstNumber = Integer.parseInt(converter.arabNum1);
-            logicalLayer.secondNumber = Integer.parseInt(converter.arabNum2);
-            logicalLayer.operator = enteredString.operatorsStrings[enteredString.operatorIndex];
-            converter.rom = true;
-            logicalLayer.romNull = converter.romNull;
-        }
-
-        logicalLayer.calculationResult();
-
-        converter.result = logicalLayer.result;
-        converter.convertRom();
-
-        OutputData outputData = new OutputData();
-        outputData.executionResult(converter.resultString);
+        return input;
     }
 }
